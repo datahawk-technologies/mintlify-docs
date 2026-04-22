@@ -1,9 +1,80 @@
 ---
-title: "Product Pricing & Offers Intelligence"
+title: "Product pricing and offers intelligence"
+description: "Daily featured offer, price, and offer-level competition data for Amazon products."
 ---
 
-This dataset helps you monitor prices, featured offers, Buy Box behavior, and offer-level competition for tracked Amazon products.
+## What this provides
 
-## Main table
+This dataset helps you monitor product offers, prices, and featured offer information over time. You can track daily changes, understand market movement, and feed dashboards or automations.
 
-`PRODUCT.AMZN_PRODUCT_FEATURED_OFFER`
+### Key use cases
+
+- Price monitoring and alerting
+- Featured offer and Buy Box tracking
+- Offer-level competition analysis
+- Seller quality insights such as rating and feedback
+- Long-term trend analysis from daily snapshots
+- BI, reporting, and ML integrations
+
+Reference: [Amazon featured offer overview](https://sell.amazon.com/blog/buy-box-featured-offer)
+
+## Refresh frequency
+
+Daily by default. Custom cadences such as twice daily or weekly can be configured on demand.
+
+## History
+
+History is retained moving forward from activation.
+
+## Dimensions and metrics
+
+The primary table is `PRODUCT.AMZN_PRODUCT_FEATURED_OFFER`.
+
+- `OBSERVATION_DATE`
+- `OBSERVATION_TIME`
+- `MARKETPLACE_KEY`
+- `PRODUCT_KEY`
+- `ASIN`
+- `HAS_FEATURED_OFFER`
+- `IS_FEATURED_OFFER_SUPPRESSED`
+- `FEATURED_LANDED_PRICE`
+- `FEATURED_LISTING_PRICE`
+- `FEATURED_SHIPPING_PRICE`
+- `FEATURED_CURRENCY_CODE`
+- `FEATURED_ITEM_CONDITION`
+- `FEATURED_FULFILLMENT_TYPE`
+- `FEATURED_SELLER_ID`
+- `FEATURED_SELLER_NAME`
+- `FEATURED_SELLER_FEEDBACK_COUNT`
+- `FEATURED_SELLER_POSITIVE_FEEDBACK_RATING`
+- `TOTAL_FEATURED_OFFERS_COUNT`
+- `TOTAL_OFFERS_COUNT`
+- `TOTAL_OFFERS_NEW_COUNT`
+- `TOTAL_OFFERS_USED_COUNT`
+- `TOTAL_OFFERS_FBA_COUNT`
+- `TOTAL_OFFERS_FBM_COUNT`
+
+## Product source configuration
+
+### Manually tracked products
+
+Pricing and offers intelligence is enabled by default for your tracked products.
+
+> This data is available for any product on Amazon.
+
+## Custom data source
+
+### Automatic ingestion from connected accounts
+
+Active product listings can also be ingested automatically from linked Amazon accounts.
+
+### Pricing
+
+| Plan | Products | EUR | USD | Billing |
+| --- | --- | --- | --- | --- |
+| Daily refresh, 1 product | 1 | €0.24 | $0.28 | per year |
+| Daily refresh, 500 products | 500 | €120.00 | $139.17 | per year |
+| Daily refresh, 1,000 products | 1,000 | €240.00 | $278.34 | per year |
+| Daily refresh, 10,000 products | 10,000 | €2,400.00 | $2,783.39 | per year |
+
+Custom frequencies are priced proportionally. USD pricing varies with the FX rate used at billing time.

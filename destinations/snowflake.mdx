@@ -1,11 +1,53 @@
 ---
 title: "Snowflake"
+description: "Managed Snowflake access, integrations, and self-hosted setup guidance."
 ---
 
-Use Snowflake when you want DataHawk to deliver structured marketplace data into a managed analytics warehouse.
+## Snowflake overview
 
-## Typical use cases
+Snowflake is a fully managed, cloud-native data warehouse built for performance and scale. It gives you flexible analytics with very little operational overhead.
 
-- BI and dashboarding
-- Internal SQL exploration
-- dbt and warehouse-based analytics engineering
+## Your DataHawk Snowflake database
+
+DataHawk provides a fully managed Snowflake database with:
+
+- Daily updated tables
+- Optimized views prepared for analytics
+- No infrastructure management on your side
+
+## Access your Snowflake credentials
+
+In your DataHawk workspace, go to `Setup > Destinations > Snowflake > See Credentials`.
+
+## Supported integrations
+
+Snowflake connects well with modern analytics tooling. Typical examples include:
+
+### Business intelligence
+
+- Power BI
+- Metabase
+- Sigma Computing
+
+### SQL and analytics platforms
+
+- Hex
+- Deepnote
+- Streamlit
+
+### Data science and ML
+
+- dbt
+- Python notebooks
+- R notebooks
+
+Your warehouse is ready to use for dashboards, reports, and custom analytics as soon as credentials are available.
+
+## Alternative setup: self-hosted Snowflake
+
+You can also connect your own Snowflake account to DataHawk. DataHawk will then load the same collected and enriched datasets into your Snowflake environment on a daily cadence.
+
+To start, contact your account manager and share:
+
+- Your Snowflake [account identifier](https://docs.snowflake.com/en/user-guide/admin-account-identifier)
+- Your Snowflake hosting provider or cloud environment, such as Azure

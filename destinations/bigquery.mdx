@@ -1,11 +1,100 @@
 ---
 title: "BigQuery"
+description: "Managed BigQuery access, integrations, and self-hosted setup guidance."
 ---
 
-Use BigQuery when you want DataHawk to host and deliver your data inside Google Cloud.
+## BigQuery overview
 
-## Typical use cases
+BigQuery is a serverless enterprise data warehouse with built-in machine learning and multi-cloud BI capabilities that scales with your data.
 
-- Power BI or Looker Studio on top of BigQuery
-- Direct SQL analysis in Google Cloud
-- Downstream modeling and scheduled reporting
+## Your DataHawk BigQuery database
+
+DataHawk provides a fully managed BigQuery database containing your collected data with:
+
+- Daily updated datasets
+- Refined, analysis-ready views
+- Zero-maintenance hosting
+
+## BigQuery database access
+
+### Manage user access
+
+Go to `Setup > Destinations > BigQuery > Access`.
+
+Only the email addresses listed on that page can access the database. Add users individually.
+
+Key notes:
+
+- `Ready` means the user has active access.
+- You can add or remove users yourself from the access screen.
+- Service account access is also available for advanced automation and integration workflows.
+
+## Supported integrations
+
+BigQuery connects natively to most analytics tools. Common options include:
+
+### Business intelligence
+
+- Looker Studio
+- Google Sheets
+- Looker
+
+### Data science and analytics
+
+- Python with `google-cloud-bigquery`
+- R with `bigrquery`
+- Jupyter notebooks
+- Apache Spark through the Spark BigQuery connector
+
+### ETL and pipelines
+
+- Google Cloud Dataflow
+- Airflow with BigQuery operators
+- Fivetran
+- Stitch
+
+## Alternative setup: self-hosted BigQuery
+
+You can also connect your own BigQuery environment to DataHawk. Once connected, it will receive the same collected, refined, and enriched data on a daily cadence.
+
+> This setup assumes you already know Google Cloud Platform and BigQuery. If you do not, the DataHawk-hosted BigQuery or Snowflake option is usually the simpler starting point.
+
+> Before you proceed, get the dedicated service principal from your DataHawk representative in the format `<company>@<projectid>.iam.gserviceaccount.com`.
+
+### Create your Google Cloud project
+
+1. Sign in to [Google Cloud Console](https://console.cloud.google.com/).
+2. Open the project selector and create a new project.
+
+![](https://files.readme.io/1609aa1-image_2023-01-25_162513267.png)
+
+3. Name the project.
+
+> A naming convention such as `<company>-datahawk-bigquery` is recommended.
+
+Note that the Google Cloud project ID can differ from the project name.
+
+![](https://files.readme.io/68ac033-image_2023-01-25_163825568.png)
+
+### Authorize DataHawk to your project
+
+1. Select the project and open `IAM & Admin > IAM`.
+
+![](https://files.readme.io/3c2f734-image_2023-01-25_164526591.png)
+
+2. Grant the DataHawk service principal these roles:
+
+- `BigQuery Data Editor`
+- `BigQuery User`
+
+![](https://files.readme.io/52d9127-better.png)
+
+### Send DataHawk the final setup details
+
+Once IAM is configured, send your DataHawk representative:
+
+- Project ID
+- Your [Google preferred location](https://cloud.google.com/about/locations#europe)
+- Email addresses that should have access
+
+If you do not specify a location, DataHawk defaults to `europe-west4`.

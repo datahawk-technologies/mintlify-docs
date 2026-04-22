@@ -1,5 +1,75 @@
 ---
-title: "Amazon Returns Data"
+title: "Amazon returns data"
+description: "FBM and FBA return datasets, reason codes, and joins for Amazon returns analysis."
 ---
 
-Returns data is available for both FBM and FBA through detailed return source tables, including reason codes, quantities, and disposition context.
+## Overview
+
+DataHawk exposes granular Amazon customer return records for both FBM and FBA. You can use this data to understand:
+
+- Which products are returned most often
+- When returns occur and how frequently
+- Why customers return items
+- Which returned items are damaged, sellable, or otherwise disposed
+
+## Data tables
+
+Returns data is available in the `SELLING_PARTNER` schema.
+
+### FBM returns
+
+- Table: `SELLING_PARTNER.RETURNS_DATA_SRC`
+- Coverage: FBM or MFN orders
+- Available since: June 2023
+- Includes ASIN, SKU, quantities, return reason codes, reason descriptions, carrier information, and return-cost context
+
+### FBA returns
+
+- Table: `SELLING_PARTNER.FBA_CUSTOMER_RETURNS_SRC`
+- Coverage: FBA orders
+- Includes fulfillment center, disposition, customer comments when present, and detailed return reason codes
+
+## FBA dispositions
+
+| Disposition | Description |
+| --- | --- |
+| `SELLABLE` | Item can be resold and is returned to inventory |
+| `DAMAGED` | Item was damaged by carrier or fulfillment center and Amazon reimburses the seller |
+| `CUSTOMER DAMAGED` | Packaging was opened or item altered; not sellable but still held in inventory |
+| `DEFECTIVE` | Product is faulty or non-functional |
+| `EXPIRED` | Product is near or past expiration and may be removed or disposed |
+
+These dispositions help you separate recoverable inventory from lost inventory and reimbursement cases.
+
+## Common return reasons
+
+| Description | FBM code | FBA code |
+| --- | --- | --- |
+| Unwanted item | `CR-UNWANTED_ITEM` | `UNWANTED_ITEM` |
+| Wrong style | `AMZ-PG-APP-STYLE` | `APPAREL_STYLE` |
+| Not compatible | `PART_NOT_COMPATIBLE`, `CR-NOT_COMPATIBLE` | `PART_NOT_COMPATIBLE`, `NOT_COMPATIBLE` |
+| Installation too difficult | `EXCESSIVE_INSTALLATION` | `EXCESSIVE_INSTALLATION` |
+| Unknown or no reason given | `UND-UNKNOWN`, `CR-NO_REASON_GIVEN` | `UNDELIVERABLE_UNKNOWN`, `NO_REASON_GIVEN` |
+| Defective item | `CR-DEFECTIVE` | `DEFECTIVE` |
+| Product not as described | `AMZ-PG-BAD-DESC` | `NOT_AS_DESCRIBED` |
+| Found better price elsewhere | `CR-FOUND_BETTER_PRICE` | `FOUND_BETTER_PRICE` |
+| Unauthorized purchase | `CR-UNAUTHORIZED_PURCHASE` | `UNAUTHORIZED_PURCHASE` |
+| Damaged by carrier | `CR-DAMAGED_BY_CARRIER` | `DAMAGED_BY_CARRIER` |
+| Quality not acceptable | `CR-QUALITY_UNACCEPTABLE` | `QUALITY_UNACCEPTABLE` |
+| Ordered wrong item | `CR-ORDERED_WRONG_ITEM` | `ORDERED_WRONG_ITEM` |
+| Missing parts | `CR-MISSING_PARTS` | `MISSING_PARTS` |
+| Never arrived | `NEVER_ARRIVED` | `NEVER_ARRIVED` |
+| Wrong size | `WRONG_SIZE` | `WRONG_SIZE` |
+
+## Join with order data
+
+Use `finance.finance_orders` to enrich returns with order-level context such as fulfillment channel.
+
+```sql
+select
+  o.fulfillment_channel,
+  r.*
+from SELLING_PARTNER.RETURNS_DATA_SRC r
+left outer join finance.finance_orders o
+  on o.order_id = r.order_id
+```

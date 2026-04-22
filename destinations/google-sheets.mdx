@@ -1,7 +1,151 @@
 ---
 title: "Connect to Google Sheets"
+description: "Use your DataHawk BigQuery database directly from Google Sheets."
 ---
 
-Use Google Sheets when you want lightweight spreadsheet access to structured DataHawk data.
+Instead of exporting CSV files manually, you can connect Google Sheets directly to your DataHawk-powered BigQuery database and keep your spreadsheet data up to date automatically.
 
-This fits operational reporting and smaller extracts rather than large-scale warehouse workflows.
+## Set up
+
+### Connect datasets
+
+Estimated setup time is under 5 minutes.
+
+1. Ask DataHawk to provision your [BigQuery destination](/destinations/bigquery).
+2. Create a Google Sheets file.
+3. Open `Data > Data connectors > Connect to BigQuery`.
+4. Select the BigQuery project created for your DataHawk workspace.
+5. Choose a schema, or write a SQL query instead.
+6. Choose a table, or write a SQL query instead.
+7. Click **Connect**.
+8. Create an extract.
+
+If you only want part of a table, such as a date range or a subset of columns, write a SQL query instead of loading the entire table.
+
+> You can either load a full table without writing code or use SQL to control exactly what Google Sheets imports.
+
+## Schedule updates
+
+To keep the spreadsheet current:
+
+1. Click **Schedule refresh**.
+2. Set the refresh cadence to daily or every 12 hours.
+3. Select the time window.
+4. Click **Save**.
+
+Daily refresh is usually enough because DataHawk updates destination data once per day.
+
+## Create an extract
+
+The initial connection shows only a preview. Create an extract if you want the full query result inside the sheet.
+
+Creating an extract lets you:
+
+- Get the full result set up to the Google Sheets extract limit
+- Select only certain columns
+- Add filters
+- Sort rows
+
+To create one:
+
+1. Click **Extract** in the query results.
+2. Choose a new sheet or an existing sheet.
+3. In the Extract Editor, select columns, filters, and sorting.
+4. Click **Apply**.
+
+The extract then syncs automatically from the query results and can be referenced from formulas elsewhere in the workbook.
+
+## Examples
+
+### Get sales rank
+
+Sales rank data for products tracked in your workspace is available in `PRODUCT.PRODUCT_SALES_RANK`.
+
+```sql
+SELECT
+  OBSERVATION_DATE,
+  CHANNEL_PRODUCT_ID,
+  BROWSE_NODE_NAME,
+  RANK
+FROM `sales-datahawk-bigquery.PRODUCT.product_sales_rank`
+WHERE OBSERVATION_DATE > CURRENT_DATE() - 30
+ORDER BY OBSERVATION_DATE DESC
+```
+
+Notes:
+
+- Use lowercase for the BigQuery project
+- Use uppercase for the schema
+- Use lowercase for the table
+- Wrap the `FROM` target in backticks
+
+### Get keyword ranks
+
+Organic keyword ranking data is available in `SEO.SEO_PRODUCT_ORGANIC_RANK`.
+
+```sql
+SELECT
+  OBSERVATION_DATE,
+  CHANNEL_PRODUCT_ID,
+  KEYWORD,
+  PAGE,
+  RANK
+FROM `sales-datahawk-bigquery.SEO.seo_product_organic_rank`
+WHERE OBSERVATION_DATE > CURRENT_DATE() - 30
+ORDER BY OBSERVATION_DATE DESC
+```
+
+### Merge tables
+
+You can merge tables directly in SQL instead of combining multiple extracts with formulas.
+
+```sql
+SELECT
+  RANKS.OBSERVATION_DATE,
+  RANKS.CHANNEL_PRODUCT_ID,
+  RANKS.KEYWORD,
+  RANKS.PAGE,
+  RANKS.RANK
+FROM `sales-datahawk-bigquery.SEO.seo_product_organic_rank` AS RANKS
+INNER JOIN `sales-datahawk-bigquery.REFERENTIAL.referential_product_tracked` AS TRACKING
+  ON RANKS.PRODUCT_KEY = TRACKING.PRODUCT_KEY
+WHERE RANKS.OBSERVATION_DATE > CURRENT_DATE() - 30
+ORDER BY RANKS.OBSERVATION_DATE DESC
+```
+
+You can also extend that join with tags:
+
+```sql
+SELECT
+  RANKS.OBSERVATION_DATE,
+  RANKS.CHANNEL_PRODUCT_ID,
+  TAGS.TAG_NAME,
+  RANKS.KEYWORD,
+  RANKS.PAGE,
+  RANKS.RANK
+FROM `sales-datahawk-bigquery.SEO.seo_product_organic_rank` AS RANKS
+INNER JOIN `sales-datahawk-bigquery.REFERENTIAL.referential_product_tracked` AS TRACKING
+  ON RANKS.PRODUCT_KEY = TRACKING.PRODUCT_KEY
+LEFT JOIN `sales-datahawk-bigquery.REFERENTIAL.referential_product_tag` AS TAGS
+  ON TRACKING.PRODUCT_KEY = TAGS.PRODUCT_KEY
+WHERE RANKS.OBSERVATION_DATE > CURRENT_DATE() - 30
+ORDER BY RANKS.OBSERVATION_DATE DESC
+```
+
+## Limitations
+
+Google Sheets is not built for large-scale analytics workloads.
+
+Common limits include:
+
+- 10 million cells per workbook
+- 30,000-row limit for pivot tables
+- 25,000 rows or 10 MB for extracts
+
+![](https://files.readme.io/cd21061-image.png)
+
+> Use filters aggressively so your working dataset stays below the extract limits.
+
+## Further reading
+
+- [Use BigQuery data in Google Sheets](https://support.google.com/docs/topic/9699960?hl=en&ref_topic=9054603&sjid=2050467850518767991-EU)

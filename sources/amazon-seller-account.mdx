@@ -1,17 +1,99 @@
 ---
 title: "Amazon Private Data - Seller Account"
+description: "Connect Amazon Seller Central to ingest seller financial, traffic, and inventory data into DataHawk."
 ---
 
-Connect Amazon Seller Central to ingest third-party seller data into DataHawk.
+## Your Seller Central account
 
-## Typical data domains
+Amazon Seller Central is the platform sellers use to sell directly to consumers on Amazon, either through FBM or FBA. DataHawk lets you connect an unlimited number of Seller Central accounts that you manage.
 
-- Orders and units sold
-- Sales and refunds
-- Fees and reimbursements
-- Traffic and sessions
-- Inventory and stock state
+When you connect an account, DataHawk automatically collects and organizes:
 
-## Requirements
+- Financial data such as revenue, expenses, and product-level cost breakdowns
+- Traffic and session data at product level
+- FBA inventory levels and inventory movement data
 
-You need admin-level access to the Seller Central account you want to authorize.
+## DataHawk connection capabilities
+
+### Supported regions
+
+DataHawk supports seller accounts in these Amazon regions:
+
+- North America: US, Canada, Mexico, Brazil
+- Europe: UK, Germany, Italy, France, Spain, Netherlands, UAE, Sweden, India, Poland
+- Far East: Japan, Singapore, Australia
+
+### Data coverage
+
+Metrics are exposed both as raw datasets and as ready-to-use dashboards and reports.
+
+| Metric family | By account in your database | By SKU in your database |
+| --- | --- | --- |
+| Sales | Yes | Yes |
+| Orders | Yes | Yes |
+| Units sold | Yes | Yes |
+| Returns | Yes | Yes |
+| Refunds and returns | Yes | Yes |
+| Reimbursements | Yes | Yes |
+| Marketing | Yes | Yes |
+| Referral costs | Yes | Yes |
+| Warehousing costs | Yes | Yes |
+| Shipping costs | Yes | Yes |
+| Other costs | Yes | Yes |
+| Traffic and sessions | Yes | Yes |
+| Inventory | Yes | Yes |
+
+### Historical storage
+
+When you connect a Seller Central account, DataHawk immediately retrieves up to 2 years of history for supported datasets, then stores and backs up data daily going forward.
+
+### Refresh frequency and delay
+
+- Refresh cadence: daily
+- Last 24 to 48 hours can be incomplete
+
+## How to connect your Amazon Seller accounts
+
+> Before you start, make sure you have the required Amazon account permissions. If you do not, send the connection flow to someone who does.
+
+1. Go to the [Sources page](https://analytics.datahawk.co/app/sources) in the DataHawk app.
+2. Click `+ Add Sources` in the top-right corner, or click `+ Add` on the Amazon Seller Central row.
+
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/f75c6397-1d5f-4fb3-badb-e8caa7348a70/5171c64b-a748-46a7-a58e-eae7d649e126/Screenshot_2026-03-26_at_15.03.24.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4666AYT6QF4%2F20260422%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260422T092235Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCXVzLXdlc3QtMiJHMEUCIBc2lEnmK7NeMghWCdOOGUJTwBlr19s2DW8oR68LusacAiEA6Y3mIu28zxo6A6Efortgj9a2o56MlVxVoqWFuczWqL0q%2FwMIRxAAGgw2Mzc0MjMxODM4MDUiDD945xVbtqhzF100oCrcA11qMM73qoNi%2BQg1UZs3mNP93Hg2xwOLUNXAO62Qt5BEiiWLC53KSObOetGpNJEQdd1eSfw76izC%2BgSI5tdVrCNV92djyZMQILAWsQjB8zj2Xlw%2FjFnYwinsUIhBZBzvIo7jCOVTBP1aXtJaF3hJzk3a2xIPeTifB9JOH6zFVGDChPNUSkfRDRirxkZRmthVullwqDRYqHKv%2Bu2BLn6%2F4j7TjjeVkNJdXLH%2Fezqh98P8HYVIx7b4nZlKIV4VglWKwhSbcxsBAjVtAQppztpZybEUoV0cMphY35d5K3Vya3MSIXoxmzaINvHSZUfdEyViAWviixZ4OAbUPi3xDSP349hLZ%2BVizJD%2F4mj4xBEhW3lGF46SQaz5jnf%2FyHLepvnX6Y2fb%2B8qaF%2BZQOTRJZkHIG%2Fxbuha0vATgVfTO01lDpl8BVNHrSPyb7Qd0KAz%2BjKsFVQLSFsjHZ8WGEcdPhFHJq01v%2F6mZrjmxLVIArLsPsG9V1Fp7ceB0WpTiS4He02J5NgeDMTwAHIC8w6TQsnAVMfYBqqcU9jBa9SrDHORwLjztu5jb6aHgy%2BVCF9IQPL9MaO%2BZPrqytFebwarXFTmEwv2RsSSEYXcCCvgxPcG7xgZwEHZvFlvnDHvxfplMK28oc8GOqUBCVE5hyFd9ZbCQn1bmmz58ag3Yzh16Q%2BFfv0Bpf7w2URp6K9Unq8Qyv90YqqQ9KYRy8c3F%2Bg7X%2B7UkbbivsTc59X2dzMSJ9XpePa0jW3%2Bv0GbVhHLylw%2BtGn5UkNPJFqeucYg%2Fi8u%2BEmtQBRlTmgVGptrh9tqR9GC5neKHKcUrT2%2Bz6Hb6fV6Mf7m2AsegbUUupeWszNC30S9rCYaWb0B6PvQfK5K&X-Amz-Signature=320b78211f56b002c72b427ef850bede0f62029d600c3df20f9a6162e286f5d5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+3. Select **Amazon Seller Central**.
+
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/f75c6397-1d5f-4fb3-badb-e8caa7348a70/ac08c88b-6a76-4f9d-9e38-3287785c0d2c/Screenshot_2026-03-26_at_15.03.59.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4666AYT6QF4%2F20260422%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260422T092235Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCXVzLXdlc3QtMiJHMEUCIBc2lEnmK7NeMghWCdOOGUJTwBlr19s2DW8oR68LusacAiEA6Y3mIu28zxo6A6Efortgj9a2o56MlVxVoqWFuczWqL0q%2FwMIRxAAGgw2Mzc0MjMxODM4MDUiDD945xVbtqhzF100oCrcA11qMM73qoNi%2BQg1UZs3mNP93Hg2xwOLUNXAO62Qt5BEiiWLC53KSObOetGpNJEQdd1eSfw76izC%2BgSI5tdVrCNV92djyZMQILAWsQjB8zj2Xlw%2FjFnYwinsUIhBZBzvIo7jCOVTBP1aXtJaF3hJzk3a2xIPeTifB9JOH6zFVGDChPNUSkfRDRirxkZRmthVullwqDRYqHKv%2Bu2BLn6%2F4j7TjjeVkNJdXLH%2Fezqh98P8HYVIx7b4nZlKIV4VglWKwhSbcxsBAjVtAQppztpZybEUoV0cMphY35d5K3Vya3MSIXoxmzaINvHSZUfdEyViAWviixZ4OAbUPi3xDSP349hLZ%2BVizJD%2F4mj4xBEhW3lGF46SQaz5jnf%2FyHLepvnX6Y2fb%2B8qaF%2BZQOTRJZkHIG%2Fxbuha0vATgVfTO01lDpl8BVNHrSPyb7Qd0KAz%2BjKsFVQLSFsjHZ8WGEcdPhFHJq01v%2F6mZrjmxLVIArLsPsG9V1Fp7ceB0WpTiS4He02J5NgeDMTwAHIC8w6TQsnAVMfYBqqcU9jBa9SrDHORwLjztu5jb6aHgy%2BVCF9IQPL9MaO%2BZPrqytFebwarXFTmEwv2RsSSEYXcCCvgxPcG7xgZwEHZvFlvnDHvxfplMK28oc8GOqUBCVE5hyFd9ZbCQn1bmmz58ag3Yzh16Q%2BFfv0Bpf7w2URp6K9Unq8Qyv90YqqQ9KYRy8c3F%2Bg7X%2B7UkbbivsTc59X2dzMSJ9XpePa0jW3%2Bv0GbVhHLylw%2BtGn5UkNPJFqeucYg%2Fi8u%2BEmtQBRlTmgVGptrh9tqR9GC5neKHKcUrT2%2Bz6Hb6fV6Mf7m2AsegbUUupeWszNC30S9rCYaWb0B6PvQfK5K&X-Amz-Signature=0e428e7cb40cda1b4f744e8a8a8c7ebd376a997e044004e37d51383340e49d34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+4. Choose the marketplace you want to connect.
+
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/f75c6397-1d5f-4fb3-badb-e8caa7348a70/dae8e769-7ea4-4036-9596-0a31d3b8ebff/Screenshot_2026-03-24_at_10.23.40.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4666AYT6QF4%2F20260422%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260422T092235Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCXVzLXdlc3QtMiJHMEUCIBc2lEnmK7NeMghWCdOOGUJTwBlr19s2DW8oR68LusacAiEA6Y3mIu28zxo6A6Efortgj9a2o56MlVxVoqWFuczWqL0q%2FwMIRxAAGgw2Mzc0MjMxODM4MDUiDD945xVbtqhzF100oCrcA11qMM73qoNi%2BQg1UZs3mNP93Hg2xwOLUNXAO62Qt5BEiiWLC53KSObOetGpNJEQdd1eSfw76izC%2BgSI5tdVrCNV92djyZMQILAWsQjB8zj2Xlw%2FjFnYwinsUIhBZBzvIo7jCOVTBP1aXtJaF3hJzk3a2xIPeTifB9JOH6zFVGDChPNUSkfRDRirxkZRmthVullwqDRYqHKv%2Bu2BLn6%2F4j7TjjeVkNJdXLH%2Fezqh98P8HYVIx7b4nZlKIV4VglWKwhSbcxsBAjVtAQppztpZybEUoV0cMphY35d5K3Vya3MSIXoxmzaINvHSZUfdEyViAWviixZ4OAbUPi3xDSP349hLZ%2BVizJD%2F4mj4xBEhW3lGF46SQaz5jnf%2FyHLepvnX6Y2fb%2B8qaF%2BZQOTRJZkHIG%2Fxbuha0vATgVfTO01lDpl8BVNHrSPyb7Qd0KAz%2BjKsFVQLSFsjHZ8WGEcdPhFHJq01v%2F6mZrjmxLVIArLsPsG9V1Fp7ceB0WpTiS4He02J5NgeDMTwAHIC8w6TQsnAVMfYBqqcU9jBa9SrDHORwLjztu5jb6aHgy%2BVCF9IQPL9MaO%2BZPrqytFebwarXFTmEwv2RsSSEYXcCCvgxPcG7xgZwEHZvFlvnDHvxfplMK28oc8GOqUBCVE5hyFd9ZbCQn1bmmz58ag3Yzh16Q%2BFfv0Bpf7w2URp6K9Unq8Qyv90YqqQ9KYRy8c3F%2Bg7X%2B7UkbbivsTc59X2dzMSJ9XpePa0jW3%2Bv0GbVhHLylw%2BtGn5UkNPJFqeucYg%2Fi8u%2BEmtQBRlTmgVGptrh9tqR9GC5neKHKcUrT2%2Bz6Hb6fV6Mf7m2AsegbUUupeWszNC30S9rCYaWb0B6PvQfK5K&X-Amz-Signature=a2569306d5ec2b84f0e802e4aa8da4f71c116e276e1c9227068e52fa2fc52fcb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+5. Sign in to the matching Amazon Seller account and authorize the DataHawk integration.
+
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/f75c6397-1d5f-4fb3-badb-e8caa7348a70/ddbf1a18-bced-427d-a4ac-7258793e8688/Screenshot_2026-03-23_at_11.37.53.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4666AYT6QF4%2F20260422%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260422T092235Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCXVzLXdlc3QtMiJHMEUCIBc2lEnmK7NeMghWCdOOGUJTwBlr19s2DW8oR68LusacAiEA6Y3mIu28zxo6A6Efortgj9a2o56MlVxVoqWFuczWqL0q%2FwMIRxAAGgw2Mzc0MjMxODM4MDUiDD945xVbtqhzF100oCrcA11qMM73qoNi%2BQg1UZs3mNP93Hg2xwOLUNXAO62Qt5BEiiWLC53KSObOetGpNJEQdd1eSfw76izC%2BgSI5tdVrCNV92djyZMQILAWsQjB8zj2Xlw%2FjFnYwinsUIhBZBzvIo7jCOVTBP1aXtJaF3hJzk3a2xIPeTifB9JOH6zFVGDChPNUSkfRDRirxkZRmthVullwqDRYqHKv%2Bu2BLn6%2F4j7TjjeVkNJdXLH%2Fezqh98P8HYVIx7b4nZlKIV4VglWKwhSbcxsBAjVtAQppztpZybEUoV0cMphY35d5K3Vya3MSIXoxmzaINvHSZUfdEyViAWviixZ4OAbUPi3xDSP349hLZ%2BVizJD%2F4mj4xBEhW3lGF46SQaz5jnf%2FyHLepvnX6Y2fb%2B8qaF%2BZQOTRJZkHIG%2Fxbuha0vATgVfTO01lDpl8BVNHrSPyb7Qd0KAz%2BjKsFVQLSFsjHZ8WGEcdPhFHJq01v%2F6mZrjmxLVIArLsPsG9V1Fp7ceB0WpTiS4He02J5NgeDMTwAHIC8w6TQsnAVMfYBqqcU9jBa9SrDHORwLjztu5jb6aHgy%2BVCF9IQPL9MaO%2BZPrqytFebwarXFTmEwv2RsSSEYXcCCvgxPcG7xgZwEHZvFlvnDHvxfplMK28oc8GOqUBCVE5hyFd9ZbCQn1bmmz58ag3Yzh16Q%2BFfv0Bpf7w2URp6K9Unq8Qyv90YqqQ9KYRy8c3F%2Bg7X%2B7UkbbivsTc59X2dzMSJ9XpePa0jW3%2Bv0GbVhHLylw%2BtGn5UkNPJFqeucYg%2Fi8u%2BEmtQBRlTmgVGptrh9tqR9GC5neKHKcUrT2%2Bz6Hb6fV6Mf7m2AsegbUUupeWszNC30S9rCYaWb0B6PvQfK5K&X-Amz-Signature=c79601cf553bfb46a8d65f8bda4d3d65f7ad954695438274ab21302b20a2d80d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+## DataHawk limitations
+
+- Data for the last 48 hours may be incomplete
+- Because of Amazon API constraints, some datasets can lag up to 72 hours
+- Some metrics are limited by what Amazon exposes
+- Initial history depth is limited by Amazon APIs
+
+## Outputs
+
+### Raw data
+
+Connected Seller Central account data is available in these schemas:
+
+| Schema | Available data |
+| --- | --- |
+| `FINANCE` | Sales data and profit and loss data |
+| `RAW_INVENTORY` | Inventory breakdown data |
+| `SELLING_PARTNER` | Traffic and sessions data |
+
+See the [data models overview](/data-models/overview) for the broader schema map.
+
+### Dashboards
+
+Ready-to-use dashboards are available in the web app and in the pre-built Power BI report covering seller finance and supply chain.

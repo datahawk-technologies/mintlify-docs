@@ -1,5 +1,61 @@
 ---
-title: "Keyword Search Volume"
+title: "Keyword search volume"
+description: "Historical Amazon keyword search volume dataset for SEO, advertising, and market analysis."
 ---
 
-`SEO.SEO_KEYWORD_VOLUME_V2` provides historical estimated monthly keyword demand by marketplace and day for tracked keywords.
+## Overview
+
+The Keyword Volumes dataset provides historical search volume metrics for keywords across Amazon marketplaces.
+
+Use it to:
+
+- Analyze keyword demand trends and seasonality
+- Benchmark product visibility
+- Inform advertising and SEO strategy
+- Support product research and market-entry analysis
+
+Each row represents the estimated monthly search volume for one keyword in one marketplace on one day.
+
+Plural variants and misspellings are treated as separate keywords. For example, `bag` and `bags` are separate records.
+
+## Requirements
+
+- You must track the relevant keyword in DataHawk
+
+## Supported marketplaces
+
+- North America: all marketplaces
+- Far East: all marketplaces
+- Europe: Spain, United Kingdom, France, Netherlands, Germany, Italy, Sweden, Turkey, United Arab Emirates, India
+
+## Data availability
+
+- Most marketplaces: May 1, 2024
+- AE and SG: August 15, 2024
+
+## Data specification
+
+Table:
+
+- `SEO.SEO_KEYWORD_VOLUME_V2`
+
+This dataset provides Amazon keyword search volume data. If a date or keyword has no data, its search volume is below measurable thresholds.
+
+Granularity:
+
+- One record per keyword, marketplace, and `DATE_DAY`
+
+Frequency:
+
+- Weekly refresh with the latest available search data
+
+Dashboards:
+
+- Search Power BI dashboard template
+- Analytics Essentials Looker Studio dashboard
+
+![](https://files.readme.io/18855c7-Monthly_Search_Volume_History_for__Halloween__Keyword_on_Amazon_US.png)
+
+## Changelog
+
+On November 3, 2025, DataHawk rolled out improvements to the keyword volume estimation models using more real Amazon data, which should progressively improve accuracy and reliability without requiring downstream changes.

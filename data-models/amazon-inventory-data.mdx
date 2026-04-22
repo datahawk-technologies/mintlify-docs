@@ -1,13 +1,101 @@
 ---
 title: "Amazon Inventory Data"
+description: "Inventory datasets, table relationships, and example queries for Amazon seller inventory."
 ---
 
-This guide maps common inventory questions to the right Amazon inventory datasets.
+This guide explains the Amazon inventory datasets available in DataHawk for tracking stock, reconciling discrepancies, and optimizing replenishment.
 
-## Common datasets
+It includes:
 
-- `SELLER_INVENTORY_FBA_PLANNING`
-- `SELLER_INVENTORY_ALL_LISTINGS`
-- `SELLER_INVENTORY_FBA_HISTORY_DAILY`
-- `SELLER_INVENTORY_LEDGER_DETAIL`
-- `SELLER_INVENTORY_LEDGER_SUMMARY`
+1. A decision flowchart to map business questions to the right inventory tables.
+2. Key inventory datasets, limitations, and use cases.
+3. Table relationships between raw reports and transformed views.
+4. Example SQL for common investigations.
+
+Use this page to validate Amazon recommendations, audit ledger details, and reduce storage-fee risk.
+
+> If you want to view your inventory at country level the same way Seller Central does, start with `SELLER_INVENTORY_FBA_PLANNING` for FBA and `SELLER_INVENTORY_ALL_LISTINGS` for FBM.
+
+## Decision flowchart
+
+The decision tree below helps you choose the right tables based on the question you are trying to answer.
+
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/f75c6397-1d5f-4fb3-badb-e8caa7348a70/1b4af6f1-5c87-429d-90b5-2ed82894955f/Untitled_diagram-2025-11-20-135122.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466THYUBE35%2F20260422%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260422T092210Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCXVzLXdlc3QtMiJGMEQCIB7IAGaqconF%2FNf62ab0qc4T1UhnjG8YMs%2FtjyA8DBIOAiA4PiE6RxDBKWnTZyGJQ1FdbAjoxF2eemGKjXzvLuNZ0Sr%2FAwhHEAAaDDYzNzQyMzE4MzgwNSIMpO5yQaV3dAZoI%2FF6KtwDLcZ%2B1ByOq0gUYm3Hs3VD4ekMgdhG2AjSpTklAZ758WYpGy%2BLUfF8Zg7BkIc9KhXQAY8J%2FZImRkxNlJ7mpR4baoPhRugpwgcQeMO%2BgpvrqazWIdCl%2BaQqKKsGSfPafmT3pAMqArBQcdIym4ZEGLuPrtzDRUro6usMs5QquvOWWPxJiZnSv3a38jPAbkUo2cpbDS5CBNPdQg1HVymEt6OvdImYwQOI6iDORnwux1AqKsWCl2sLAHYGKu07X6I6GuIrmXLQxibkv5T5e4KyJnfSUONVuSwZczR7a9x3MdsFGtAgaOphD%2FvCPZQAAB1MKlllSV1iWas8HLdTnPBwYzszTTk2NcvkhDeI11RhhYgesnyOHFA3KpBk1hRrK0Nsx8wZERymp70iiC%2Ft2zunVXNM57Pj0Xks7fAeJhP%2Bf6GJQxKqiWaIApWgFzcNH3iqtcVds9itWHNM3gmWYHc2Y%2BENJpu8wzyxhueHgkkHsCkJ2fv3eRsfZoNucGQTJ6g2h6UafV9z8WHT%2F%2FINarM2Oz9o00DJWM4p7pSguWTNJvxUlvmmQ5cCR8hl8W6yOX%2FV%2BH42c6FbTZMsOkS4tr%2FdPcRZ9d0H1vrlyF4EOBJamSChMzIwMPnSonwjNGRQ45gw076hzwY6pgEhfXw66uZmxLv09%2Beo4pZdQHwfLaR5fkHp%2F2WIayU%2FO8MN6unzDC%2FrIaXaQE7lL94DhmyR6umZ4Y0MJGOP5cXKn%2B5eqfXmeRoisITg4fcI3M0dN%2FKfCUFEGaIIoH5%2Fbuv1Z49Vm7rBM3Ap5TZeRo8gfH7VwlYceU%2BVEEFVLNJjHP8teKIc4mZXGHvELl4o6kfdMY3cd1JVzA874xmS0sOuTW3sOLuU&X-Amz-Signature=97eec80d75ce7b4fccf3a48ed4d0274226d4d99c90bcb93b96dbafa839f0bb82&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+## Inventory datasets
+
+| Schema | View | Key columns | Purpose | Freshness | Geographic scope | Limitations | Example use case |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `RAW_INVENTORY` | `RAW_INVENTORY_FBA` | `asin`, `sku`, `afn_fulfillable_quantity`, `afn_inbound_shipped_quantity`, `afn_total_quantity` | Latest FBA snapshot for sellable, unsellable, and inbound units | Daily | Region | No country-level granularity, archived listings excluded, only ASINs seen in past 7 days | How much sellable stock do I have today |
+| `RAW_INVENTORY` | `RAW_INVENTORY_FBA_HISTORY` | Same as above | Historical FBA snapshots | Daily | Region | Does not explain why changes occurred, archived listings excluded | How did my stock change over 30 days |
+| `SELLING_PARTNER` | `SELLER_INVENTORY_FBA_HISTORY_DAILY` | `observation_date`, `asin`, `sku`, `afn_fulfillable_quantity`, `afn_inbound_shipped_quantity`, `afn_reserved_quantity`, `afn_total_quantity` | Daily seller-level FBA snapshots | Daily | Region | No transaction-level detail, no country or warehouse granularity | How did reserved inventory change over time |
+| `RAW_INVENTORY` | `RAW_INVENTORY_RESTOCK_RECOMMENDATIONS` | `total_days_of_supply`, `recommended_replenishment_quantity`, `alert` | Amazon restock advice for SKUs with 14 days of supply or less | Daily | Country support in MX, FR, DE, CA, JP, US, IT, ES, GB | Excludes healthy SKUs and inactive SKUs | Which SKUs need urgent restocking |
+| `RAW_INVENTORY` | `RAW_INVENTORY_RESTOCK_RECOMMENDATIONS_HISTORY` | `observation_time`, `recommended_replenishment_quantity`, `days_of_supply_at_amazon_fulfillment_network`, `total_days_of_supply` | History of Amazon restock advice | Daily | Same as above | Same as above | How has Amazon's restock advice changed |
+| `SELLING_PARTNER` | `SELLER_INVENTORY_LEDGER_DETAIL` | `event_type`, `quantity`, `fulfillment_center`, `disposition`, `country`, `adjustment_reason_code` | Detailed inventory movement ledger for the last 18 months | Daily, up to 3-day delay | Region, country, warehouse | None listed | Why is there a 200-unit discrepancy |
+| `SELLING_PARTNER` | `SELLER_INVENTORY_LEDGER_SUMMARY` | `starting_warehouse_balance`, `ending_warehouse_balance`, `customer_shipments`, `customer_returns` | Aggregated inventory health and net changes | Daily, up to 3-day delay | Region, country, warehouse | None listed | What is my net inventory change this week |
+| `SELLING_PARTNER` | `SELLER_INVENTORY_FBA_PLANNING` | `inv_age_365_plus_days`, `recommended_action`, `estimated_storage_cost` | Recommendations for aged stock, pricing, and removals | Weekly | All except MX | MX not supported | Which SKUs should I remove to avoid fees |
+| `SELLING_PARTNER` | `SELLER_INVENTORY_ALL_LISTINGS` | `price`, `quantity`, `status` | Current catalog snapshot for MFN listings | Daily | Marketplace | No FBA quantity information | What products are active or inactive |
+| `SELLING_PARTNER` | `SELLER_INVENTORY_ALL_LISTINGS_HISTORY` | `price`, `quantity`, `status` | Historical catalog snapshots for MFN listings | Daily | Marketplace | No FBA quantity information | What products were active last month |
+
+## How tables connect
+
+Purple nodes are raw Amazon reports. Blue nodes are DataHawk views available in your destination.
+
+![](https://prod-files-secure.s3.us-west-2.amazonaws.com/f75c6397-1d5f-4fb3-badb-e8caa7348a70/46b9c3a2-a94a-41f6-b144-1d2a6f7680c5/Untitled_diagram-2025-11-20-135100.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466THYUBE35%2F20260422%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260422T092210Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEH4aCXVzLXdlc3QtMiJGMEQCIB7IAGaqconF%2FNf62ab0qc4T1UhnjG8YMs%2FtjyA8DBIOAiA4PiE6RxDBKWnTZyGJQ1FdbAjoxF2eemGKjXzvLuNZ0Sr%2FAwhHEAAaDDYzNzQyMzE4MzgwNSIMpO5yQaV3dAZoI%2FF6KtwDLcZ%2B1ByOq0gUYm3Hs3VD4ekMgdhG2AjSpTklAZ758WYpGy%2BLUfF8Zg7BkIc9KhXQAY8J%2FZImRkxNlJ7mpR4baoPhRugpwgcQeMO%2BgpvrqazWIdCl%2BaQqKKsGSfPafmT3pAMqArBQcdIym4ZEGLuPrtzDRUro6usMs5QquvOWWPxJiZnSv3a38jPAbkUo2cpbDS5CBNPdQg1HVymEt6OvdImYwQOI6iDORnwux1AqKsWCl2sLAHYGKu07X6I6GuIrmXLQxibkv5T5e4KyJnfSUONVuSwZczR7a9x3MdsFGtAgaOphD%2FvCPZQAAB1MKlllSV1iWas8HLdTnPBwYzszTTk2NcvkhDeI11RhhYgesnyOHFA3KpBk1hRrK0Nsx8wZERymp70iiC%2Ft2zunVXNM57Pj0Xks7fAeJhP%2Bf6GJQxKqiWaIApWgFzcNH3iqtcVds9itWHNM3gmWYHc2Y%2BENJpu8wzyxhueHgkkHsCkJ2fv3eRsfZoNucGQTJ6g2h6UafV9z8WHT%2F%2FINarM2Oz9o00DJWM4p7pSguWTNJvxUlvmmQ5cCR8hl8W6yOX%2FV%2BH42c6FbTZMsOkS4tr%2FdPcRZ9d0H1vrlyF4EOBJamSChMzIwMPnSonwjNGRQ45gw076hzwY6pgEhfXw66uZmxLv09%2Beo4pZdQHwfLaR5fkHp%2F2WIayU%2FO8MN6unzDC%2FrIaXaQE7lL94DhmyR6umZ4Y0MJGOP5cXKn%2B5eqfXmeRoisITg4fcI3M0dN%2FKfCUFEGaIIoH5%2Fbuv1Z49Vm7rBM3Ap5TZeRo8gfH7VwlYceU%2BVEEFVLNJjHP8teKIc4mZXGHvELl4o6kfdMY3cd1JVzA874xmS0sOuTW3sOLuU&X-Amz-Signature=c713f5fd69b50e84c3a9c21eb870fbe199df6bcb3f3f6b61d35660ad89a8a288&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+## Example queries
+
+### How much sellable AFN stock do I have for a SKU today
+
+```sql
+SELECT SKU, AFN_FULFILLABLE_QUANTITY, AFN_INBOUND_SHIPPED_QUANTITY
+FROM RAW_INVENTORY_FBA
+WHERE SKU = 'X';
+```
+
+### Why did my inventory drop by 200 units in the US last week
+
+```sql
+SELECT EVENT_TYPE, QUANTITY, FULFILLMENT_CENTER, DATE
+FROM RAW_INVENTORY_LEDGER_DETAIL
+WHERE SKU = 'X'
+  AND COUNTRY = 'US'
+  AND DATE BETWEEN '2023-10-01' AND '2023-10-07';
+```
+
+### Which SKUs need urgent restocking
+
+```sql
+SELECT SKU, ALERT, RECOMMENDED_REPLENISHMENT_QTY
+FROM RAW_INVENTORY_RESTOCK_RECOMMENDATIONS
+WHERE ALERT IN ('low_stock', 'out_of_stock');
+```
+
+If a SKU is missing here, check whether it has had sales in the last 3 months, has more than 14 days of supply, or has no projected demand.
+
+### How has sellable stock changed over the past month
+
+```sql
+SELECT OBSERVATION_DATE, AFN_FULFILLABLE_QUANTITY
+FROM SELLER_INVENTORY_FBA_HISTORY_DAILY
+WHERE ASIN = 'Y'
+  AND OBSERVATION_DATE BETWEEN '2023-09-01' AND '2023-09-30';
+```
+
+### Which aged SKUs should I remove to avoid storage fees
+
+```sql
+SELECT SKU, INV_AGE_365_PLUS_DAYS, RECOMMENDED_ACTION, ESTIMATED_STORAGE_COST
+FROM SELLER_INVENTORY_FBA_PLANNING
+WHERE INV_AGE_365_PLUS_DAYS > 0;
+```
+
+### Amazon says restock but I still have inventory
+
+```sql
+SELECT estimated_excess_quantity, weeks_of_cover_t30
+FROM SELLING_PARTNER.SELLER_INVENTORY_FBA_PLANNING
+WHERE SKU = 'YOUR_SKU';
+```
+
+Use this to reconcile restock recommendations against available stock and expected demand.

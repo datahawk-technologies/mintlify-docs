@@ -1,5 +1,215 @@
 ---
 title: "Seller Profit Data"
+description: "Financial reporting datasets, methodologies, and example queries for Amazon seller profit analysis."
 ---
 
-Seller Profit Data combines Amazon financial events, enrichment reports, and uploaded product expenses into a profit ledger and aggregated profit views.
+DataHawk provides financial reporting for Amazon Seller accounts. This page explains the underlying data sources and the profit models that power those reports.
+
+Profit and loss data is assembled from multiple sources and first recorded as an events ledger.
+
+## Data sources
+
+### Financial events
+
+Most records in the seller profit ledger come from the [Amazon Finance API](https://developer-docs.amazon.com/sp-api/docs/finances-api-reference). This includes the full set of transactions on an Amazon Seller account. Some account-level events, such as advertising costs and storage fees, are replaced with richer events from enrichment reports.
+
+- Financial events history: 2 years
+- Freshness: up to T-2d
+
+### Enrichment reports
+
+Some financial events lack enough context in the base API. DataHawk replaces them with richer source reports where possible.
+
+#### Advertising reports
+
+Advertising cost events are replaced with events from advertising reports so you get sponsored type and ASIN annotation on otherwise account-level costs.
+
+- History: 2 years
+- Freshness: up to T-2d
+
+#### FBA removal order and detail report
+
+Removal and disposal fee events are replaced with this report to add ASIN and SKU annotation. Amazon publishes these reports monthly, so events can take up to one month to appear.
+
+#### FBA storage fee charges report
+
+Storage fee events are replaced with this report to add ASIN-level detail. This report is also monthly and can lag up to one month.
+
+#### FBA long-term storage fee charges report
+
+Long-term storage fee events are replaced with this report to add ASIN and SKU detail. This report is monthly and can lag up to one month.
+
+### Cost of goods
+
+User-submitted product expenses are applied to items sold and returned so DataHawk can append cost-of-goods events to the profit ledger.
+
+## Data dictionary
+
+All datasets are also documented in the DataHawk datasets schema spreadsheet:
+
+- [DataHawk finance and profit schema reference](https://docs.google.com/spreadsheets/d/1gYGqKQP9Z71nz1lOb4y0wJ15i27NvsUzdliIJeIx0HY/edit#gid=175439716)
+
+## Datasets
+
+### Profit ledger
+
+`finance.finance_profit_ledger`
+
+This is the canonical ledger of profit events compiled from seller finance data sources. Each event is annotated with timestamp, category, subcategory, description, and additional context.
+
+#### Categories
+
+- Sales
+- Refunds
+- Cost of goods
+- Amazon fees
+- Marketing
+- Adjustments
+- Tax expenses
+- Tax adjustments
+
+#### Timestamps
+
+- `purchase_date` when applicable
+- `accrual_date` for the incurred date
+- `recorded_date` for Amazon's official ledger posting date
+
+`posted_date` is obsolete.
+
+## Accrual profit methodology
+
+Default aggregated profit reporting follows an accrual methodology. Events are recognized based on the date they were incurred rather than payout date.
+
+### Profit
+
+`finance.finance_profit`
+
+This table is a daily summary of the profit ledger, aggregated for better dashboard performance.
+
+Grain:
+
+- `date_day`
+- Seller account
+- Marketplace
+- ASIN
+- SKU
+- Event signature
+
+### Profit metrics
+
+`finance.finance_profit_metrics`
+
+This table contains business-level profit metrics built from the ledger.
+
+Grain:
+
+- `date_day`
+- Seller account
+- Marketplace
+- ASIN
+- SKU
+
+Metrics:
+
+- Gross revenue
+- Net revenue
+- Gross profit
+- Operating profit
+- Adjusted operating profit
+- Net profit
+
+## Recorded profit methodology
+
+If you want profit analysis on Amazon's official ledger posting date, use these tables:
+
+- `FINANCE_PROFIT_RECORDED_BASIS`
+- `FINANCE_PROFIT_METRICS_RECORDED_BASIS`
+
+## Example queries
+
+### Summarize Amazon profit this year
+
+```sql
+select
+  category,
+  subcategory,
+  sum(amount_usd) as amount,
+  category_path_order
+from finance.finance_profit_ledger
+where year(posted_date) = year(current_date())
+group by all
+order by category_path_order
+```
+
+### Break profit down to event level
+
+```sql
+select
+  category,
+  subcategory,
+  description,
+  sum(amount_usd) as amount,
+  category_path_order
+from finance.finance_profit_ledger
+where year(posted_date) = year(current_date())
+group by all
+order by category_path_order, sum(amount) desc
+```
+
+### Summarize monthly Amazon profit this year
+
+```sql
+select
+  date_trunc(month, posted_date) as posted_month,
+  category,
+  subcategory,
+  sum(amount_usd) as amount,
+  category_path_order
+from finance.finance_profit_ledger
+where year(posted_date) = year(current_date())
+group by all
+order by posted_month, category_path_order
+```
+
+### Convert profit to euros
+
+```sql
+select
+  l.category,
+  l.subcategory,
+  sum(l.amount_usd * r.rate) as amount,
+  l.category_path_order
+from finance.finance_profit_ledger l
+left join referential.referential_currency_rate r
+  on l.posted_date = r.posted_date
+ and l.currency = r.currency
+where year(l.posted_date) = year(current_date())
+  and r.base = 'USD'
+group by all
+order by l.category_path_order
+```
+
+### Explore SKU profitability
+
+```sql
+select
+  asin,
+  sku,
+  sum(amount_usd) as amount
+from finance.finance_profit_ledger
+where year(posted_date) = year(current_date())
+group by all
+order by sum(amount) desc
+```
+
+### Explore brand profitability
+
+```sql
+select
+  brand,
+  sum(amount_usd) as amount
+from finance.finance_profit_ledger
+where year(posted_date) = year(current_date())
+group by all
+order by sum(amount) desc
+```

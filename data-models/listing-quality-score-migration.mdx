@@ -1,5 +1,69 @@
 ---
-title: "Listing Quality Score Migration"
+title: "Listing quality score migration"
+description: "Field mapping and migration notes for moving from PRODUCT_LISTING_QUALITY_SCORE to PRODUCT_LQA_SCORE."
 ---
 
-Use this guide to move from `PRODUCT_LISTING_QUALITY_SCORE` to `PRODUCT_LQA_SCORE`, including renamed score columns and removed fields.
+## Purpose
+
+Use this guide to migrate dashboards, queries, and reports from `PRODUCT_LISTING_QUALITY_SCORE` to `PRODUCT_LQA_SCORE`.
+
+## Key improvements
+
+- Clearer score column names
+- New observability keys: `OBSERVED_PRODUCT_KEY` and `OBSERVED_CHANNEL_PRODUCT_ID`
+- Removal of `SCORE_A_PLUS`
+
+## Field mapping
+
+| Old field | New field | Notes |
+| --- | --- | --- |
+| `MARKETPLACE_KEY` | `MARKETPLACE_KEY` | Same |
+| `PRODUCT_KEY` | `PRODUCT_KEY` | Same |
+| — | `OBSERVED_PRODUCT_KEY` | New product snapshot context |
+| `CHANNEL_PRODUCT_ID` | `CHANNEL_PRODUCT_ID` | Same |
+| — | `OBSERVED_CHANNEL_PRODUCT_ID` | New observed ASIN context |
+| `OBSERVATION_DATE` | `OBSERVATION_DATE` | Same |
+| `OBSERVATION_TIME` | `OBSERVATION_TIME` | Same |
+| `SCORE_GLOBAL` | `GLOBAL_SCORE` | Renamed |
+| `SCORE_TITLE` | `TITLE_SCORE` | Renamed |
+| `SCORE_DESCRIPTION` | `DESCRIPTION_SCORE` | Renamed |
+| `SCORE_IMAGE` | `MEDIA_SCORE` | Renamed |
+| `SCORE_A_PLUS` | — | Removed |
+| `SCORE_BULLET_POINTS` | `BULLET_POINTS_SCORE` | Renamed |
+| `SYNC_TIME` | `SYNC_TIME` | Same |
+| `_SYNC_TIME` | `_SYNC_TIME` | Same |
+| `WORKSPACE_ID` | `WORKSPACE_ID` | Same |
+
+## Example migration
+
+Before:
+
+```sql
+SELECT
+  PRODUCT_KEY,
+  SCORE_GLOBAL,
+  SCORE_IMAGE,
+  OBSERVATION_DATE
+FROM PRODUCT_LISTING_QUALITY_SCORE
+```
+
+After:
+
+```sql
+SELECT
+  PRODUCT_KEY,
+  GLOBAL_SCORE,
+  MEDIA_SCORE,
+  OBSERVATION_DATE
+FROM PRODUCT_LQA_SCORE
+```
+
+## Tips
+
+- Validate score logic before comparing old and new results.
+- If you relied on `SCORE_A_PLUS`, treat it as a removed field and update downstream logic.
+- Use `OBSERVED_PRODUCT_KEY` when tracking listing changes over time.
+
+## Reference
+
+- [Listing quality analysis](/data-models/listing-quality-analysis)

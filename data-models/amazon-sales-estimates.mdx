@@ -1,5 +1,55 @@
 ---
-title: "Amazon Sales Estimates"
+title: "Amazon sales estimates"
+description: "Estimated sales volume and revenue datasets for Amazon product and category research."
 ---
 
-Sales Estimates transform product rank and category behavior into estimated units and revenue for tracked Amazon products and categories.
+## Overview
+
+The Sales Estimates dataset provides estimated sales volume and revenue for Amazon products. It uses historical signals such as Best Sellers Rank, price, and category performance to help you evaluate product demand and market opportunities.
+
+## Use cases
+
+- Product research
+- Competitor benchmarking
+- Inventory planning
+
+## How it works
+
+DataHawk converts product rank evolution into daily sales estimates and uses Amazon's category hierarchy to improve accuracy. Sales estimates are computed at parent level.
+
+### Key features
+
+- Extrapolation logic for missing values
+- Daily updates based on BSR and market changes
+- Ongoing recalibration as new data is collected
+
+## How to get sales estimates
+
+### Track an Amazon category
+
+- Access up to 2 years of historical BSR data depending on category
+- Estimates update automatically as rankings change
+
+### Track products and create segments
+
+- Create custom segments to compare your products against competitors
+- History starts when tracking begins
+- Use tags to organize groups of products
+
+## Datasets
+
+| Dataset | Description | Key columns |
+| --- | --- | --- |
+| `PRODUCT_SALES_ESTIMATES_V5_RAW` | Daily product-level sales estimates with extrapolation logic | Date, parent product, revenue, units, price, rating, rating count, score |
+| `PRODUCT_SALES_ESTIMATES_V5` | Aggregated daily sales estimates at parent level | Date, parent product, revenue, units, price, rating, rating count, score |
+| `PRODUCT_SALES_ESTIMATES_V5_CHILD` | Daily child-level sales estimates with extrapolation | Date, child product, revenue, units, price, rating, rating count, score |
+| `REPORT_MARKET_BEST_SELLER_RANK_AND_ESTIMATES` | Best seller rank plus sales estimates for tracked categories, top 100 only | Date, product, sales rank, sales estimates, category |
+| `REPORT_MARKET_PRODUCT_SALES_RANK_AND_ESTIMATES` | Sales rank plus estimates for tracked categories with brand columns | Date, product, sales rank, sales estimates, category, brand, brand catalog |
+
+## Marketplace metadata
+
+High-confidence coverage includes Amazon US, SA, IE, AE, BR, GB, FR, DE, IN, IT, EG, MX, TR, ES, CA, and JP.
+
+Moderate-confidence coverage includes Amazon AU, SE, BE, NL, PL, and SG.
+
+> Estimates usually improve after you start tracking a category because DataHawk collects additional forward history. Connecting your seller account can also improve estimate quality and depth.

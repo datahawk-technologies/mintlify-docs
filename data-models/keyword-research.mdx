@@ -1,5 +1,81 @@
 ---
-title: "Keyword Research"
+title: "Keyword research"
+description: "Keyword suggestion, lookup, and placement datasets for product SEO research."
 ---
 
-Keyword Research gives you keyword suggestions, lookup, placement, and keyword-seeded expansion datasets under the reporting layer.
+## Keyword research datasets
+
+Use these datasets to improve product visibility and SEO strategy.
+
+## Available datasets
+
+Three core datasets are available for tracked products, plus one optional keyword-seeded dataset.
+
+| Dataset | Description | Refresh frequency |
+| --- | --- | --- |
+| Keyword suggestions | AI-generated keyword ideas with performance metrics | Daily |
+| Keyword lookup | All keywords your products ranked for over the last 7 days | Weekly |
+| Keyword placement | Where keywords appear in title, description, or bullets | Daily |
+| Keyword-seeded keyword suggestions | Related keywords generated from a seed keyword | On demand |
+
+Notes:
+
+- Amazon stopped sharing placement data after August 16, 2023.
+- Keyword-seeded keyword suggestions are available on request.
+
+## Database tables
+
+All data is in the `REPORTS` schema.
+
+| Schema | Table | Contents |
+| --- | --- | --- |
+| `REPORTS` | `REPORT_PRODUCT_KEYWORD_SUGGESTIONS` | AI-generated keyword ideas |
+| `REPORTS` | `REPORT_PRODUCT_KEYWORD_LOOKUP` | Organic ranking keywords |
+| `REPORTS` | `REPORT_PRODUCT_KEYWORD_PLACEMENT` | Listing keyword placement |
+| `REPORTS` | `REPORT_KEYWORD_KEYWORD_SUGGESTIONS` | Keyword-seeded suggestions |
+
+- [View full column reference](https://docs.google.com/spreadsheets/d/1gYGqKQP9Z71nz1lOb4y0wJ15i27NvsUzdliIJeIx0HY/edit#gid=175439716)
+
+## Key features
+
+### Keyword suggestions
+
+How DataHawk generates suggestions:
+
+1. Identify product competitors.
+2. Extract relevant keywords from competitor categories.
+3. Filter out brand, color, and size-specific terms.
+4. Score the remaining keywords for relevance.
+
+Included metrics:
+
+- Competitivity score from `-100` to `100`, based on the top three ranked products
+- Monthly reach potential, combining search volume with competitivity
+
+### Keyword lookup
+
+Shows all keywords where your product:
+
+- Ranked organically in the last 7 days
+- Was detected by DataHawk tracking
+
+### Keyword placement
+
+Tracks whether keywords appear in:
+
+- Title
+- Description
+- Bullet points
+- Backend keywords
+
+### Keyword-seeded keyword suggestions
+
+This dataset generates related keywords from a seed keyword when you do not want to start from a product. It can replace part of the workflow teams often run in tools like SEMrush on top of DataHawk.
+
+## Important notes
+
+- Coverage: works for about 90% of products
+- Supported marketplaces: English-speaking marketplaces only, including US, GB, CA, AU, SG, IN, and AE
+- Processing time: track by noon UTC to get next-day results at 6am UTC
+
+If suggestions are missing, DataHawk may need more data about the product's browse nodes or keyword rankings. In practice, that usually means refining categorization or tracking more relevant keywords.

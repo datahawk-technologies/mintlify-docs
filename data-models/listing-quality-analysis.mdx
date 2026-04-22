@@ -1,5 +1,102 @@
 ---
-title: "Listing Quality Analysis"
+title: "Listing quality analysis"
+description: "Listing Quality Score datasets, scoring logic, and optimization guidance."
 ---
 
-Listing Quality Analysis scores Amazon listings using measurable criteria and rule compliance to help you improve conversion and guideline adherence.
+Optimize your Amazon product listings with data-driven insights.
+
+## What this data is useful for
+
+1. Which products need urgent optimization to improve conversions.
+2. Where listings fail Amazon requirements.
+3. How your listing quality compares with competitors.
+
+## Key features
+
+- Scorecard with a Listing Quality Score (LQS) for each product
+- More than 25 measurable listing elements
+- Actionable optimization signals
+- Competitive benchmarking
+
+## Core concepts
+
+| Term | Definition |
+| --- | --- |
+| Criteria | Measurable listing elements such as title length or image count |
+| Rules | Amazon guidelines evaluated against each listing |
+| LQS | Listing Quality Score from 0 to 100 |
+
+## Available data tables
+
+All data lives in the `PRODUCT` schema.
+
+| Table | Contents | Refresh | Key fields |
+| --- | --- | --- | --- |
+| `PRODUCT_LQA_CRITERION` | Raw listing metrics | Daily | `product_key`, `criterion_key`, `date` |
+| `PRODUCT_LQA_RULE` | Rule compliance status | Daily | `product_key`, `rule_key`, `date` |
+| `PRODUCT_LQA_SCORE` | Calculated quality scores | Daily | `product_key`, `date` |
+| `PRODUCT_LQA_RULE_CRITERION_ASSOCIATION` | Rule-to-criterion mapping | Daily | `rule_key`, `criterion_key` |
+
+![](https://files.readme.io/f7b3a3d-image.png)
+
+### Data interpretation
+
+- Null value: Data could not be extracted
+- Empty value: The characteristic was checked and not found
+
+## What DataHawk analyzes
+
+### Title optimization
+
+- Length, with 60 to 150 characters recommended
+- Capitalization
+- Prohibited content such as emojis or prices
+- Brand inclusion
+
+### Bullet points
+
+- Count, with 3 to 6 recommended
+- Length, ideally under 255 characters each
+- Punctuation
+- Capitalization
+
+### Description
+
+- Length, with 1,000 to 2,000 characters recommended
+- Presence of A+ content
+
+### Media
+
+- Image count, with 5 to 7 recommended
+- Video presence
+- A+ content
+
+## Scoring rules
+
+Section weights:
+
+- Title: 40%
+- Media: 30%
+- Bullets: 20%
+- Description: 10%
+
+Each rule has an importance weight from 1 to 5. Global LQS combines the section scores into a weighted score out of 100.
+
+> Scores are only calculated when sufficient data exists.
+
+## Implementation tips
+
+1. Prioritize listings with the lowest scores first.
+2. Benchmark against top competitors.
+3. Track score changes over time.
+4. Combine LQS with sales data to prioritize the highest-value fixes.
+
+## Roadmap
+
+- Walmart support
+- Additional marketplace rules
+- More scoring customization
+
+## Related page
+
+- [Listing Quality Score Migration](/data-models/listing-quality-score-migration)
