@@ -11,13 +11,15 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Start here",
             "pages": [
               "index",
-              "getting-started/overview",
+              "explore/index",
+              "getting-started/index",
+              "getting-started/what-is-datahawk",
               "getting-started/before-you-start",
               "getting-started/quickstart"
             ]
@@ -25,16 +27,105 @@
           {
             "group": "Platform",
             "pages": [
-              "platform/web-app"
+              "platform/web-app",
+              "platform/manage-account",
+              "platform/workspace-management",
+              "platform/manage-members",
+              "platform/stripe-subscription-management",
+              "platform/api-reference",
+              "platform/modules-overview",
+              "platform/ai-copywriter",
+              "platform/alerts"
             ]
           },
           {
-            "group": "Data",
+            "group": "Sources",
             "pages": [
               "sources/overview",
+              "sources/amazon-seller-account",
+              "sources/amazon-vendor-account",
+              "sources/amazon-advertising-account",
+              "sources/walmart-marketplace",
+              "sources/walmart-connect",
+              "sources/on-demand-sources",
+              "sources/use-datahawk-api-to-manage-sources"
+            ]
+          },
+          {
+            "group": "Destinations",
+            "pages": [
               "destinations/overview",
+              "destinations/bigquery",
+              "destinations/snowflake",
+              "destinations/google-sheets",
+              "destinations/excel",
+              "destinations/writable-database-service"
+            ]
+          },
+          {
+            "group": "Dashboards",
+            "pages": [
               "dashboards/overview",
-              "data-models/overview"
+              "dashboards/product-dashboard-user-guide",
+              "dashboards/ads-dsp-dashboard-documentation",
+              "dashboards/looker-studio-template",
+              "dashboards/build-something-new"
+            ]
+          },
+          {
+            "group": "Knowledge hub",
+            "pages": [
+              "data-models/overview",
+              "data-models/vendor-account-sourcing-vs-manufacturing-view",
+              "data-models/amazon-brand-analytics-data",
+              "data-models/amazon-inventory-data",
+              "data-models/amazon-removal-data",
+              "data-models/product-pricing-and-offers-intelligence",
+              "data-models/amazon-replenishment-subscribe-and-save",
+              "data-models/amazon-datahawk-reports",
+              "data-models/amazon-products-daily",
+              "data-models/daily-exchange-rate-dataset",
+              "data-models/automated-competitors-detection",
+              "data-models/keyword-research",
+              "data-models/listing-quality-analysis",
+              "data-models/listing-quality-score-migration",
+              "data-models/seller-profit-data",
+              "data-models/amazon-returns-data",
+              "data-models/amazon-sales-estimates",
+              "data-models/keyword-search-volume",
+              "data-models/convert-currencies"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "support/get-in-touch",
+              "support/snowflake-credits-usage-and-consumption-monitoring",
+              "support/white-labeling-looker-studio-dashboards",
+              "support/datahawk-releases-changelog",
+              "support/datahawk-scam-prevention",
+              "support/datahawk-exploration-pass"
+            ]
+          },
+          {
+            "group": "Troubleshooting",
+            "pages": [
+              "troubleshooting/ads-data-wrong-account-type",
+              "troubleshooting/no-traffic-data-for-asin",
+              "troubleshooting/no-manufacturing-data",
+              "troubleshooting/restrict-dsp-profiles",
+              "troubleshooting/no-dsp-data-after-connection",
+              "troubleshooting/advertising-data-not-populating",
+              "troubleshooting/snowflake-behind-firewall"
+            ]
+          },
+          {
+            "group": "Archive",
+            "pages": [
+              "archive/amazon-sponsored-ranks-tracking-is-changing",
+              "archive/profit-data-methodology-update",
+              "archive/2025-interface-migration",
+              "archive/media-kit"
             ]
           }
         ]
@@ -45,6 +136,7 @@
           {
             "group": "API",
             "pages": [
+              "platform/api-reference",
               "api-reference/introduction"
             ]
           }
