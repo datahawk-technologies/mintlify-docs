@@ -1,0 +1,62 @@
+---
+title: "Destinations overview"
+description: "Deliver DataHawk data into databases, spreadsheets, and BI tools."
+---
+
+Destinations create a managed database that contains your DataHawk data and makes it available to external tools.
+
+## Why use destinations
+
+Use destinations when you want to:
+
+- work in your existing BI stack
+- create custom dashboards and reports
+- query structured ecommerce data directly
+- automate analysis instead of exporting files manually
+
+## What the database contains
+
+Destinations expose the data you track in DataHawk, including:
+
+- tracked products, keywords, and categories
+- Seller Central data
+- Vendor Central data
+- advertising data
+- curated KPIs and enriched views
+
+## Supported databases
+
+### BigQuery
+
+DataHawk can provide a managed BigQuery database with daily updated datasets and analysis-ready views. You can also request a self-hosted setup if your team already runs BigQuery in Google Cloud.
+
+### Snowflake
+
+DataHawk can provide a managed Snowflake database with daily updated tables and optimized views. Self-hosted Snowflake setups are also available by request.
+
+## Downstream tools
+
+Common destination-driven workflows include:
+
+- Power BI
+- Looker Studio
+- Google Sheets
+- Excel
+- dbt
+- Python and notebook-based analysis
+
+## Google Sheets
+
+Use the native BigQuery connector in Google Sheets to bring DataHawk data into a spreadsheet. This works well for smaller extracts and operational reporting.
+
+## Excel
+
+Use Snowflake credentials and the Snowflake ODBC driver to connect Excel to your DataHawk data. This is useful for spreadsheet-first workflows, but you should filter carefully to stay within Excel limits.
+
+## Writable database service
+
+If you need write access, DataHawk can provision a separate writable database alongside the managed read-only one. This supports custom tables, ETL, and integrations, and is typically scoped as a professional services engagement.
+
+<Tip>
+  Data sync is automated. For most use cases, a daily refresh cadence is enough in downstream tools.
+</Tip>

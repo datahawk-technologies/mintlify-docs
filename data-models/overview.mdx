@@ -1,0 +1,71 @@
+---
+title: "Datasets and schemas"
+description: "Understand the main DataHawk schemas and where to find common data."
+---
+
+DataHawk organizes data into schemas and tables so you can work at different levels of abstraction, from raw ingestion to curated reports.
+
+## Main schema families
+
+### `ADVERTISING`
+
+Advertising performance by account, campaign, keyword, product, and platform-specific reporting layers.
+
+### `FINANCE`
+
+Seller financial and order data, including orders, events, account metrics, product metrics, and profit and loss tables.
+
+### `MARKET`
+
+Market intelligence data such as browse-node estimates, category-level ranks, and product sales estimates.
+
+### `PRODUCT`
+
+Tracked product metadata, listing quality, competitor data, image links, history, and AI-generated product content.
+
+### `RAW_INVENTORY`
+
+FBA inventory snapshots, ledger events, and replenishment recommendations.
+
+### `REFERENTIAL`
+
+Reference entities such as marketplaces, tracked products, tracked keywords, accounts, tags, and exchange rates.
+
+### `REPORTS`
+
+Curated and enriched reporting tables that combine data across schemas for analytics use cases.
+
+### `SELLING_PARTNER`
+
+Seller and vendor operational tables, including traffic, returns, forecasts, fees, and inventory-related data.
+
+### `SEO`
+
+Keyword volume plus organic and sponsored rank tracking.
+
+### `USAGE`
+
+Snowflake usage and destination activity data where applicable.
+
+## Common questions
+
+### Where do I find sessions and page views?
+
+Use Seller traffic tables in the `SELLING_PARTNER` area, especially the traffic tables broken down by ASIN, parent ASIN, or SKU.
+
+### Where do I find category leaders?
+
+Use market and reporting tables that combine category ranks, estimates, and brand fields.
+
+### Where do I find keyword rank data?
+
+Use the `SEO` schema for ranking tables or `REPORTS` for enriched rank datasets.
+
+### Why are there raw and preview labels?
+
+- **Raw** means the dataset stays close to the original source payload.
+- **Preview** means the dataset may still evolve in structure or coverage.
+
+## Referential document
+
+DataHawk also maintains a table and column referential in Google Sheets for exhaustive schema-level documentation. Use that when you need field-by-field detail rather than conceptual guidance.
