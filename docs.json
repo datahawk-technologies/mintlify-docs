@@ -11,10 +11,10 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Get started",
         "groups": [
           {
-            "group": "Start here",
+            "group": "Get started",
             "pages": [
               "index",
               "explore/index",
@@ -22,6 +22,17 @@
               "getting-started/what-is-datahawk",
               "getting-started/before-you-start",
               "getting-started/quickstart"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "overview"
             ]
           },
           {
@@ -179,15 +190,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
